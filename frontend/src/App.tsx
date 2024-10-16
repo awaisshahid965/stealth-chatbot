@@ -1,7 +1,7 @@
-import { CopilotPopup } from "@copilotkit/react-ui";
 import "./App.css";
 
 import "@copilotkit/react-ui/styles.css";
+import { CopilotPopup } from "@copilotkit/react-ui";
 
 function App() {
 
