@@ -6,6 +6,8 @@ from langchain_openai import ChatOpenAI
 from app.vector_stores.qdrant_vector_store import QdrantVectoreStore
 from langchain import hub
 from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_core.prompts import ChatPromptTemplate
+
 
 from dotenv import load_dotenv
 
@@ -20,8 +22,12 @@ model = ChatOpenAI(
     temperature=0,
 )
 
-# Pulling prompt from hub
-retrieval_qa_chat_prompt = hub.pull("langchain-ai/retrieval-qa-chat")
+retrieval_qa_chat_prompt = ChatPromptTemplate.from_messages([
+  ("system", "Answer any user questions based solely on the context below. Format each of your responses in Markdown, and for each line break, use `<br>` at the end of the line. Ensure that all bullet points, sections, and paragraphs are properly separated with `<br>` for clearer formatting:\n<context>\n{context}\n</context>"),
+  ("placeholder", "{chat_history}"),
+  ("human", "{input}"),
+])
+
 combine_docs_chain = create_stuff_documents_chain(model, retrieval_qa_chat_prompt)
 
 rag_chain = create_retrieval_chain(qdrant_vector_store.get_retriever(), combine_docs_chain)
