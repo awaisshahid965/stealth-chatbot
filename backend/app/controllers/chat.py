@@ -7,6 +7,11 @@ from app.vector_stores.qdrant_vector_store import QdrantVectoreStore
 from langchain import hub
 from langchain.chains.combine_documents import create_stuff_documents_chain
 
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
 router = APIRouter()
 
 qdrant_vector_store = QdrantVectoreStore(dataset_name="stealth")
@@ -31,6 +36,7 @@ async def query_endpoint(request: Request):
     # Extract query from the request body (assuming JSON payload)
     body = await request.json()
     query = body.get("query")
+    print('query', query)
     
     # Return the streamed response
     return StreamingResponse(answer_stream(query), media_type="text/plain")
