@@ -39,11 +39,8 @@ async def answer_stream(query: str):
 
 @router.post("/query/")
 async def query_endpoint(request: Request):
-    # Extract query from the request body (assuming JSON payload)
     body = await request.json()
     query = body.get("query")
-    print('query', query)
     
-    # Return the streamed response
     return StreamingResponse(answer_stream(query), media_type="text/plain")
 
