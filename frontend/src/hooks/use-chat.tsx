@@ -9,7 +9,6 @@ type ChatStateCallback = (fn: ChatStateCallbackFn) => void
 /* chat processing utils */
 
 const sendMessageToAPI = (message: string) => {
-  throw new Error('testing...' + message)
   return fetch(`${API_URL}/query`, {
     method: "POST",
     headers: {
@@ -102,7 +101,6 @@ export const useChat = () => {
     const lastFailedQuery = chatMessages[oldChatLength - 2].text;
 
     setChatMessages(prev => prev.slice(0, oldChatLength - 2))
-    await new Promise(r => setTimeout(r, 3000))
     await processUserChatQuery(lastFailedQuery)
   }
 
