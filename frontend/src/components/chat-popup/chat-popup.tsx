@@ -13,14 +13,16 @@ interface Message {
 
 interface ChatPopupProps {
   messages: Message[];
-  onSend: (message: string) => void;
   disableButton?: boolean;
+  onSend: (message: string) => void;
+  onFail: () => void;
 }
 
 const ChatPopup: React.FC<ChatPopupProps> = ({
   messages,
-  onSend,
   disableButton,
+  onSend,
+  onFail,
 }) => {
   const [opened, setOpened] = React.useState(false);
   const chatContainerRef = React.useRef<HTMLDivElement | null>(null);
@@ -50,8 +52,8 @@ const ChatPopup: React.FC<ChatPopupProps> = ({
           {messages.map((msg, index) => (
             <ChatPopupMessage
               key={index}
-              isUser={msg.isUser}
-              message={msg.text}
+              {...msg}
+              onFail={onFail}
             />
           ))}
         </div>
