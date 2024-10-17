@@ -2,14 +2,19 @@
 import React, { useState } from "react";
 import ChatPopup from "./components/chat-popup/chat-popup";
 
+interface IMessage {
+  isUser: boolean;
+  text: string;
+}
+
 const App: React.FC = () => {
-  const [messages, setMessages] = useState<{ isUser: boolean; text: string }[]>(
-    []
-  );
+  const [messages, setMessages] = useState<Array<IMessage>>([
+    { isUser: false, text: "Hi! 👋 How can I assist you today?" }
+  ]);
   const [isAnswering, setIsAnswering] = useState<boolean>(false);
 
   const handleSend = async (message: string) => {
-    setIsAnswering(true)
+    setIsAnswering(true);
     setMessages((prev) => [...prev, { isUser: true, text: message }]);
 
     const response = await fetch("http://localhost:8000/query/", {
@@ -53,18 +58,15 @@ const App: React.FC = () => {
       }
     }
 
-    setIsAnswering(false)
+    setIsAnswering(false);
   };
 
   return (
-    <div>
-      <div className="p-4">HomePage ({isAnswering ? 'answering...' : 'ask in popup'})</div>
-      <ChatPopup
-          messages={messages}
-          onSend={handleSend}
-          disableButton={isAnswering}
-        />
-    </div>
+    <ChatPopup
+      messages={messages}
+      onSend={handleSend}
+      disableButton={isAnswering}
+    />
   );
 };
 

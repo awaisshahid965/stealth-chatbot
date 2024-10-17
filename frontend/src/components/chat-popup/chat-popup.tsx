@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 import ChatPopupMessage from "./chat-popup-message";
 import ChatPopupInputBox from "./chat-popup-input";
 import ChatPopupButton from "./chat-popup-button";
+import ChatIcon from "../../icons/chat-icon";
+import CloseIcon from "../../icons/close-icon";
 
 interface Message {
   isUser: boolean;
@@ -61,7 +63,7 @@ const ChatPopup: React.FC<ChatPopupProps> = ({
       <ChatPopupButton
         onClick={() => setOpened(!opened)}
       >
-        {opened ? <span className="text-3xl font-light">&times;</span> : <span>Ask</span>}
+        {opened ? <CloseIcon /> : <ChatIcon />}
       </ChatPopupButton>
     </>
   );
