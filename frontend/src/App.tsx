@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import ChatPopup from "./components/chat-popup/chat-popup";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 interface IMessage {
   isUser: boolean;
   text: string;
@@ -16,7 +18,7 @@ const App: React.FC = () => {
     setIsAnswering(true);
     setMessages((prev) => [...prev, { isUser: true, text: message }]);
 
-    const response = await fetch("http://localhost:8000/query/", {
+    const response = await fetch(`${API_URL}/query`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
