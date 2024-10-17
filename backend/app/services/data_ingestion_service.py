@@ -1,27 +1,21 @@
 import os
-from typing import Callable, List
+from typing import List
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import PyPDFLoader
+from langchain.text_splitter import TextSplitter
 from langchain.schema import Document
 
 from app.vector_stores.base import VectorStoreBase
 
-class RecursiveDataIngestionService:
+class DataIngestionService:
     
     def __init__(
         self,
         datastore: VectorStoreBase,
-        chunk_size: int = 500,
-        chunk_overlap: int = 10,
-        length_function: Callable[[str], int] = len
+        text_splitter: TextSplitter
     ):
         self.datastore = datastore
-        self.text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=chunk_size,
-            chunk_overlap=chunk_overlap,
-            length_function=length_function,
-        )
+        self.text_splitter = text_splitter
 
     def add_pdf(self, pdf_file_path: str):
         if not os.path.exists(pdf_file_path):

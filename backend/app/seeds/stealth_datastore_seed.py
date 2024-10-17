@@ -4,7 +4,9 @@ import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
-from app.services.recursive_data_ingestion_service import RecursiveDataIngestionService
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+from backend.app.services.data_ingestion_service import DataIngestionService
 from app.vector_stores.qdrant_vector_store import QdrantVectoreStore
 from app.utils.file_utils import get_files_in_directory
 
@@ -17,7 +19,15 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 load_dotenv()
 
 datastore = QdrantVectoreStore(dataset_name="stealth")
-data_ingestion_service = RecursiveDataIngestionService(datastore=datastore)
+recursive_text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=500,
+    chunk_overlap=10,
+    length_function=len,
+)
+data_ingestion_service = DataIngestionService(
+    datastore=datastore,
+    text_splitter=recursive_text_splitter,
+)
 data_directory = os.path.join(SCRIPT_DIR, "..", "data")
 
 supported_extensions = [".pdf", ".md"]
